@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" class="sl-theme-dark">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}">
+
+    <!-- Shoelace -->
+    <link rel="stylesheet" th:href="@{/webjars/shoelace-style__shoelace/cdn/themes/light.css}">
+    <link rel="stylesheet" th:href="@{/webjars/shoelace-style__shoelace/cdn/themes/dark.css}" />
+    <script type="module" th:src="@{/webjars/shoelace-style__shoelace/cdn/shoelace-autoloader.js}"></script>
+<!--    <script type="text/javascript" th:src="@{/webjars/htmx.org/dist/htmx.min.js}"></script>-->
+    <style>
+        .pitch-black {
+            background-color: black;
+            color: var(--sl-color-neutral-1000);
+        }
+
+        body a {
+            text-decoration: none;
+            font-family: var(--sl-font-sans);
+            /*font-weight: var(--sl-font-weight-bold);*/
+            color: var(--sl-color-neutral-1000);
+        }
+    </style>
+</head>
+<body class="pitch-black">
+
+<!--<video controls>
+    <source th:src="@{'/video/test'}" type="video/mp4">
+</video>-->
+
+<header class="p-3">
+
+    <sl-tab-group class="tabs" style="--indicator-color: white;">
+
+        <sl-tab slot="nav" panel="home" style="--sl-color-primary-600: white;">Home</sl-tab>
+        <sl-tab slot="nav" panel="advanced" disabled> <i class="bi bi-stars"></i> Discover</sl-tab>
+        <sl-tab slot="nav" panel="custom">
+<!--                <input type="search" class="me-2" placeholder="Search..." aria-label="Search">-->
+            <sl-input placeholder="Search" clearable></sl-input>
+        </sl-tab>
+
+        <sl-tab-panel name="home">
+            <!--This is the home tab panel.-->
+            <div class="">
+                <a th:each="video : ${videos}"
+                   th:href="@{/videos/{fileName}(fileName=${#uris.escapePathSegment(video)})}">
+                    <p th:text="${video}"></p>
+                </a>
+            </div>
+        </sl-tab-panel>
+        <sl-tab-panel name="custom">This is the custom tab panel.</sl-tab-panel>
+        <sl-tab-panel name="advanced">This is a disabled Discover tab panel.</sl-tab-panel>
+
+    </sl-tab-group>
+
+</header>
+
+<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
