@@ -19,7 +19,7 @@ public interface YTSAPIClient {
     Mono<YTSMoviesRecord> getMostWatchedMovies(@PathVariable int page);
 
     @GetExchange("list_movies.json?sort=date_added&order_by=desc&limit=6")
-    YTSMoviesRecord getLatestMovies();
+    Mono<YTSMoviesRecord> getLatestMovies();
 
     @GetExchange("list_movies.json?sort=date_added&order_by=desc&limit=50&page={page}")
     YTSMoviesRecord getLatestMovies(@PathVariable int page);
@@ -34,7 +34,7 @@ public interface YTSAPIClient {
     YTSMoviesRecord getMustWatch();
 
     @GetExchange("list_movies.json?genre=comedy&sort_by=download_count&limit=50&page={page}")
-    YTSMoviesRecord getMustWatch(@PathVariable int page);
+    Mono<YTSMoviesRecord> getMustWatch(@PathVariable int page);
 
     @GetExchange("list_movies.json?minimum_rating=7&limit=6")
     Flux<YTSMoviesRecord> getIMDBHighestRated();
@@ -46,7 +46,7 @@ public interface YTSAPIClient {
     YTSMoviesRecord getMostLiked();
 
     @GetExchange("list_movies.json?sort_by=like_count&order_by=desc&limit=50&page={page}")
-    YTSMoviesRecord getMostLiked(@PathVariable int page);
+    Mono<YTSMoviesRecord> getMostLiked(@PathVariable int page);
 
     @GetExchange("movie_details.json?movie_id={id}")
     YTSMovieRecord getMovieDetails(@PathVariable int id);
@@ -63,10 +63,10 @@ public interface YTSAPIClient {
     record YTSMovieData(YTSMovieDetails movie) {
     }
 
-    record YTSMoviesRecord(String status, String status_message, Mono<YTSData> data) {
+    record YTSMoviesRecord(String status, String status_message, YTSData data) {
     }
 
-    record YTSData(Flux<List<YTSMovieDetails>> movies) {
+    record YTSData(List<YTSMovieDetails> movies) {
     }
 
     record YTSMovieDetails(
@@ -86,7 +86,7 @@ public interface YTSAPIClient {
             Object small_cover_image,
             Object medium_cover_image,
             Object large_cover_image,
-            Flux<List<YTSTorrent>> torrents) {
+            List<YTSTorrent> torrents) {
     }
 
     record YTSTorrent(

@@ -15,7 +15,7 @@ public class WebClientConfig {
 
     @Bean
     public WebClient webClient() {
-        var poolSize = 500;
+        /*var poolSize = 500;
         var provider = ConnectionProvider.builder("CPool")
                 .lifo()
                 .maxConnections(poolSize)
@@ -30,7 +30,8 @@ public class WebClientConfig {
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .filter((clientRequest, next) -> next.exchange(clientRequest)
                         .onErrorResume(e -> Mono.error(new RuntimeException("An error occurred", e))))
-                .build();
+                .build();*/
+        return WebClient.create();
     }
 
     @Bean
