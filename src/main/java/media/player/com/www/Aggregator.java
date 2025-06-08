@@ -13,20 +13,23 @@ import java.util.List;
 public class Aggregator {
 
     final YTSAPIClient ytsAPIClient;
+    final HttpBinAPI httpBinAPI;
 
     public Mono<AggregatedResponse> getMovies() {
+        Mono<HttpBinAPI.HttpBinResponse> httpBinResponseMono = httpBinAPI.get();
         Mono<YTSAPIClient.YTSMoviesRecord> latestMoviesMono = handleApiCall(ytsAPIClient.getLatestMovies());
         Mono<YTSAPIClient.YTSMoviesRecord> mustWatchMono = handleApiCall(ytsAPIClient.getMustWatch(1));
         Mono<YTSAPIClient.YTSMoviesRecord> mostWatchedMoviesMono = handleApiCall(ytsAPIClient.getMostWatchedMovies(1));
         Mono<YTSAPIClient.YTSMoviesRecord> mostLikedMono = handleApiCall(ytsAPIClient.getMostLiked(1));
 
-        return Mono.zip(latestMoviesMono, mustWatchMono, mostWatchedMoviesMono, mostLikedMono)
-                .map(tuple -> {
+        return Mono.zip(latestMoviesMono, mustWatchMono, mostWatchedMoviesMono, mostLikedMono, httpBinResponseMono)
+                .flatMap(tuple -> {
                     YTSAPIClient.YTSMoviesRecord mostWatched = tuple.getT1();
                     YTSAPIClient.YTSMoviesRecord latest = tuple.getT2();
                     YTSAPIClient.YTSMoviesRecord mustWatch = tuple.getT3();
                     YTSAPIClient.YTSMoviesRecord mostLiked = tuple.getT4();
-                    return new AggregatedResponse(mostWatched, latest, mustWatch, mostLiked);
+                    HttpBinAPI.HttpBinResponse httpBinResponse = tuple.getT5();
+                    return Mono.just(new AggregatedResponse(httpBinResponse, mostWatched, latest, mustWatch, mostLiked));
                 });
     }
 
@@ -37,7 +40,8 @@ public class Aggregator {
         });
     }
 
-    record AggregatedResponse(
+    public record AggregatedResponse(
+            HttpBinAPI.HttpBinResponse httpBinResponse,
             YTSAPIClient.YTSMoviesRecord mostWatched,
             YTSAPIClient.YTSMoviesRecord latest,
             YTSAPIClient.YTSMoviesRecord mustWatch,

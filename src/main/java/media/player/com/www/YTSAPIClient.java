@@ -18,32 +18,32 @@ public interface YTSAPIClient {
     @GetExchange("list_movies.json?limit=50&sort_by=download_count&page={page}")
     Mono<YTSMoviesRecord> getMostWatchedMovies(@PathVariable int page);
 
-    @GetExchange("list_movies.json?sort=date_added&order_by=desc&limit=6")
+    @GetExchange("list_movies.jso")
     Mono<YTSMoviesRecord> getLatestMovies();
 
     @GetExchange("list_movies.json?sort=date_added&order_by=desc&limit=50&page={page}")
     YTSMoviesRecord getLatestMovies(@PathVariable int page);
 
     @GetExchange("list_movies.json?genre=comedy&sort=date_added&limit=6")
-    YTSMoviesRecord getLatestComedyMovies();
+    Mono<YTSMoviesRecord> getLatestComedyMovies();
 
     @GetExchange("list_movies.json?genre=comedy&sort=date_added&limit=50&page={page}")
     YTSMoviesRecord getLatestComedyMovies(@PathVariable int page);
 
     @GetExchange("list_movies.json?genre=comedy&sort_by=download_count&limit=6")
-    YTSMoviesRecord getMustWatch();
+    Mono<YTSMoviesRecord> getMustWatch();
 
     @GetExchange("list_movies.json?genre=comedy&sort_by=download_count&limit=50&page={page}")
     Mono<YTSMoviesRecord> getMustWatch(@PathVariable int page);
 
     @GetExchange("list_movies.json?minimum_rating=7&limit=6")
-    Flux<YTSMoviesRecord> getIMDBHighestRated();
+    Mono<YTSMoviesRecord> getIMDBHighestRated();
 
     @GetExchange("list_movies.json?minimum_rating=7&limit=50&page={page}")
     YTSMoviesRecord getIMDBHighestRated(@PathVariable int page);
 
     @GetExchange("list_movies.json?sort_by=like_count&order_by=desc&limit=6")
-    YTSMoviesRecord getMostLiked();
+    Mono<YTSMoviesRecord> getMostLiked();
 
     @GetExchange("list_movies.json?sort_by=like_count&order_by=desc&limit=50&page={page}")
     Mono<YTSMoviesRecord> getMostLiked(@PathVariable int page);

@@ -60,7 +60,7 @@ class VideoController {
                 .defaultIfEmpty(ResponseEntity.noContent().build());
     }*/
 
-    @GetMapping("/{fileName}")
+    /*@GetMapping("/{fileName}")
     ResponseEntity<UrlResource> getFullVideo(@PathVariable("fileName") String fileName,
                                              @RequestHeader HttpHeaders headers) throws MalformedURLException {
         log.debug("{}", headers.getRange());
@@ -71,6 +71,15 @@ class VideoController {
                         .getMediaType(video)
                         .orElse(MediaType.APPLICATION_OCTET_STREAM))
                 .body(video);
+    }*/
+
+    @GetMapping("/{fileName}")
+    public Mono<ResponseEntity<Resource>> playVideo(@PathVariable("fileName") String fileName) {
+        return videoService.loadResource(fileName)
+                .map(resource -> ResponseEntity.status(HttpStatus.PARTIAL_CONTENT)
+                        .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                        .body(resource))
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     /*@GetMapping(value = "/{fileName}", produces = "video/mp4")
