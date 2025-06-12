@@ -25,7 +25,7 @@ public class BackgroundServices {
     void onApplicationReady() {
         try {
             log.info("Indexing user content");
-            localMediaIndexer.indexLocalMedia(runtimeHelper.getMoviesFolderPath(), runtimeHelper.getMusicFolderPath(), runtimeHelper.getDownloadsFolderPath());
+            localMediaIndexer.indexLocalMedia(runtimeHelper.getMoviesFolderPath(), runtimeHelper.getMusicFolderPath());
         } catch (IOException e) {
             log.error("Error indexing local media", e);
         }

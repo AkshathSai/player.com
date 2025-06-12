@@ -23,6 +23,8 @@
 
         body {
             min-height: 100vh;
+            background: url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background-size: cover;
             transition: all 0.5s ease;
             color: var(--text-light);
         }
@@ -38,8 +40,8 @@
         }
 
         body.dark-mode {
-            /*background: url('vid7997.mp4') no-repeat center center fixed;*/
-            /*background-size: cover;*/
+            background: url('https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background-size: cover;
             color: var(--text-dark);
         }
 
@@ -100,13 +102,101 @@
             transform: translateY(-8px);
             box-shadow: 0 20px 40px rgba(0,0,0,0.2);
         }
+        .media-thumbnail {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
 
-        .media-card:hover {
+        .media-thumbnail.video {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .media-thumbnail.audio {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .media-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .media-card:hover .media-thumbnail img {
+            transform: scale(1.1);
+        }
+
+        .media-icon {
+            font-size: 4rem;
+            color: white;
+            opacity: 0.7;
+            position: absolute;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .media-thumbnail:hover .media-icon {
+            opacity: 1;
             transform: scale(1.1);
         }
 
         .media-content {
             padding: 1.25rem;
+        }
+
+        /* Hide thumbnail content when player is active */
+        .media-thumbnail.playing .media-icon,
+        .media-thumbnail.playing .play-overlay,
+        .media-thumbnail.playing img {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 3;
+        }
+
+        .media-thumbnail:hover .play-overlay {
+            opacity: 1;
+        }
+
+        .play-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #333;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .play-btn:hover {
+            background: white;
+            transform: scale(1.1);
         }
 
         .media-type-badge {
@@ -142,44 +232,12 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        /* Update the controls-section class */
         .controls-section {
-            background: var(--glass-bg);
-            border-radius: 16px;
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
             padding: 1rem;
             margin-bottom: 2rem;
-        }
-
-        /* Add dark mode support for controls section */
-        body.dark-mode .controls-section {
-            background: var(--dark-glass-bg);
-            border: 1px solid var(--dark-glass-border);
-        }
-
-        /* Style for Clear All and Shuffle buttons in light mode */
-        .btn-outline-secondary {
-            color: #000;
-            border-color: #000;
-        }
-
-        .btn-outline-secondary:hover {
-            background-color: rgb(255, 255, 255);
-            color: #000;
-        }
-
-        /* Adjust button styles in controls for dark mode */
-        body.dark-mode .controls-section .btn-outline-secondary {
-            color: var(--text-muted-dark);
-            border-color: var(--text-muted-dark);
-        }
-
-        body.dark-mode .controls-section .btn-outline-secondary:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
         }
 
         .playlist-counter {
@@ -189,11 +247,6 @@
             border-radius: 25px;
             font-size: 0.9rem;
             font-weight: 500;
-        }
-
-        /* Ensure the playlist counter has proper contrast in dark mode */
-        body.dark-mode .playlist-counter {
-            background: linear-gradient(135deg, #4b6cb7 0%, #553c8b 100%);
         }
 
         .media-title {
@@ -211,6 +264,44 @@
         .media-meta {
             font-size: 0.85rem;
             opacity: 0.8;
+        }
+
+        /* Background Settings in Navbar */
+        .bg-dropdown {
+            min-width: 300px;
+            padding: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1050; /* Higher than default dropdown */
+        }
+
+        .bg-option {
+            width: 50px;
+            height: 35px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-size: cover;
+            background-position: center;
+            border: 2px solid transparent;
+            margin: 2px;
+        }
+
+        .bg-option:hover {
+            transform: scale(1.1);
+            border: 2px solid #007bff;
+        }
+
+        .bg-option.active {
+            border: 2px solid #28a745;
+            transform: scale(1.05);
+        }
+
+        .bg-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.3rem;
+            margin-top: 0.5rem;
         }
 
         .navbar-controls {
@@ -238,26 +329,9 @@
         .main-content {
             margin-top: 20px;
         }
-
-        #backgroundVideo {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1; /* Ensure it stays behind other content */
-        }
     </style>
 </head>
 <body>
-
-<!-- Video Background -->
-<video autoplay muted loop id="backgroundVideo">
-    <source src="/vid7997.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-</video>
-
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg glass mt-3 mx-3 px-4">
     <a class="navbar-brand fw-bold" href="#">
@@ -265,6 +339,18 @@
     </a>
 
     <div class="ms-auto navbar-controls">
+        <!-- Background Selector -->
+        <div class="dropdown">
+            <button class="btn btn-outline-light btn-sm dropdown-toggle px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-palette"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end bg-dropdown glass">
+                <h6 class="dropdown-header fw-medium">Choose Background</h6>
+                <div class="bg-grid" id="backgroundGrid">
+                    <!-- Background options will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
 
         <div class="navbar-divider"></div>
 
@@ -313,14 +399,14 @@
         <div class="col-lg-4 col-md-6 mb-4" th:each="video : ${videos}">
             <a th:href="@{/videos/{fileName}(fileName=${#uris.escapePathSegment(video)})}">
                 <div class="card glass border-0 media-card h-100">
-                <div class="media-content">
-                    <div class="media-type-badge">
-                        <i class="bi bi-film"></i>
-                        Video
+                    <div class="media-content">
+                        <div class="media-type-badge">
+                            <i class="bi bi-film"></i>
+                            Video
+                        </div>
+                        <h5 class="media-title" th:text="${#strings.replace(#strings.replace(video, '.mp4', ''), '_', ' ')}">Video Title</h5>
                     </div>
-                    <h5 class="media-title" th:text="${#strings.replace(#strings.replace(video, '.mp4', ''), '_', ' ')}">Video Title</h5>
                 </div>
-            </div>
             </a>
         </div>
 
@@ -376,18 +462,74 @@
 
 <!-- Custom JavaScript -->
 <script>
+    // Background options
+    const backgrounds = {
+        light: [
+            '/vid7997.mp4', // Forest
+            'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1920&q=80', // Mountain lake
+            'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1920&q=80', // Field
+            'https://images.unsplash.com/photo-1439066615861-d1af74d74000?auto=format&fit=crop&w=1920&q=80', // Lake
+            'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=1920&q=80', // Waterfall
+            'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=1920&q=80', // Mountains
+            'https://images.unsplash.com/photo-1418489098061-ce87b5dc3aee?auto=format&fit=crop&w=1920&q=80', // Sunset beach
+            'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=1920&q=80', // Forest path
+        ],
+        dark: [
+            'https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1920&q=80', // Night sky
+            'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&w=1920&q=80', // Night mountains
+            'https://images.unsplash.com/photo-1502134249126-9f3755a50d78?auto=format&fit=crop&w=1920&q=80', // Night city
+            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1920&q=80', // Night forest
+            'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1920&q=80', // Dark lake
+            'https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?auto=format&fit=crop&w=1920&q=80', // Dark ocean
+            'https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?auto=format&fit=crop&w=1920&q=80', // Northern lights
+            'https://images.unsplash.com/photo-1500622944204-b135684e99fd?auto=format&fit=crop&w=1920&q=80', // Night landscape
+        ]
+    };
+
     // Theme toggle functionality
     const themeToggle = document.getElementById('themeToggle');
     const body = document.body;
     let currentTheme = 'light';
+    let currentBgIndex = 0;
 
     // Load saved theme and background
     const savedTheme = localStorage.getItem('theme') || 'light';
+    const savedBgIndex = localStorage.getItem('bgIndex') || '0';
     currentTheme = savedTheme;
+    currentBgIndex = parseInt(savedBgIndex);
 
     if (savedTheme === 'dark') {
         body.classList.add('dark-mode');
         themeToggle.innerHTML = '<i class="bi bi-sun-fill"></i>';
+    }
+
+    // Set initial background
+    setBackground(currentBgIndex);
+
+    function setBackground(index) {
+        // Ensure index is within bounds
+        const maxIndex = backgrounds[currentTheme].length - 1;
+        index = Math.min(Math.max(0, index), maxIndex);
+
+        const bgUrl = backgrounds[currentTheme][index];
+        body.style.backgroundImage = `url('${bgUrl}')`;
+        currentBgIndex = index;
+        localStorage.setItem('bgIndex', index.toString());
+        updateBackgroundGrid();
+    }
+
+    function updateBackgroundGrid() {
+        const grid = document.getElementById('backgroundGrid');
+        grid.innerHTML = '';
+
+        backgrounds[currentTheme].forEach((bg, index) => {
+            const option = document.createElement('div');
+            option.className = `bg-option ${index === currentBgIndex ? 'active' : ''}`;
+            option.style.backgroundImage = `url('${bg}')`;
+            option.title = `Background ${index + 1}`;
+            option.addEventListener('click', () => setBackground(index));
+            grid.appendChild(option);
+        });
     }
 
     themeToggle.addEventListener('click', () => {
@@ -398,6 +540,11 @@
             ? '<i class="bi bi-sun-fill"></i>'
             : '<i class="bi bi-moon-fill"></i>';
         localStorage.setItem('theme', currentTheme);
+
+        // Keep same background index when switching themes (if available)
+        const maxIndex = backgrounds[currentTheme].length - 1;
+        const newIndex = Math.min(currentBgIndex, maxIndex);
+        setBackground(newIndex);
     });
 
     // File handling
@@ -494,6 +641,7 @@
 
     // Initialize
     updatePlaylistCounter();
+    updateBackgroundGrid();
 </script>
 </body>
 </html>
